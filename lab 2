@@ -29,9 +29,9 @@
 	    GPA numeric(2,1) default 3.0
 	);
 	
-	insert into students values('20B030499', 'Bayashat', '02.12.2002', 3.5);
+	insert into students values('20B030499', 'Aibat', '02.12.2002', 3.5);
 	
-	insert into students(id, name, birthday, GPA) values('20B030499', 'Bayashat', '02.12.2002', 3.5);
+	insert into students(id, name, birthday, GPA) values('20B030499', 'Aibat', '02.12.2002', 3.5);
 	
 	update students set GPA = 2.9 where GPA = 3.5;
 	update students set GPA = 2.8;
