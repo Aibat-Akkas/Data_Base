@@ -1,0 +1,68 @@
+-- Lab7
+
+-- Task 1
+-- How can we store large-object types?
+/*
+Large objects (photos, videos, CAD files, etc.) are stored as a large object:
+    blob: binary large object -- object is a large collection of uninterpreted
+        binary data (whose interpretation is left to an application outside of the
+        database system)
+    clob: character large object -- object is a large collection of character data
+*/
+
+-- Task 2
+-- a)
+create role accountant;
+create role administrator;
+create role support;
+
+grant all privileges on accounts, customers, transactions to administrator;
+grant all privileges on transactions to accountant;
+grant select, insert, update on accounts, customers, transactions to support;
+
+-- b)
+create user admin;
+create user buhgalter;
+create user moderator;
+
+grant administrator to admin;
+grant accountant to buhgalter;
+grant support to moderator;
+
+-- c)
+grant all privileges on accounts, customers, transactions to admin with grant option;
+
+-- d)
+revoke delete on transactions from accountant;
+
+-- Task 4
+create domain currency as varchar(3);
+
+alter table accounts alter column currency type currency using currency::currency;
+
+-- Task 5
+-- a)
+create unique index check_for_uniqueness on accounts(customer_id, currency);
+
+-- b)
+create index for_transactions on accounts(currency, balance);
+
+-- Task 6
+DO $$
+    DECLARE
+        cur_balance float;
+        lim float;
+    BEGIN
+        insert into transactions values (4, current_timestamp, 'NK90123', 'NT10204', 100 * 431, 'init');
+        update accounts set balance = balance - 100 where account_id = 'NK90123';
+        update accounts set balance = balance + 100 * 431 where account_id = 'NT10204';
+        select balance into cur_balance from accounts a where account_id = 'NK90123';
+        select a.limit into lim from accounts a where account_id = 'NK90123';
+        if cur_balance < lim then
+            rollback;
+        else
+            update transactions set status = 'committed' where id = 4;
+            commit;
+        end if;
+    END;
+$$
