@@ -1,0 +1,429 @@
+create table Customer (
+	cust_id DECIMAL(12),
+	first_name VARCHAR(50),
+	last_name VARCHAR(50),
+           country VARCHAR(50),
+           city VARCHAR(50),
+	street VARCHAR(50),
+	home VARCHAR(12),
+           phone VARCHAR(32),
+           company_id DECIMAL(12),        
+          PRIMARY KEY (cust_id)
+);
+create table Card(
+	card_id decimal(12),
+	card_name varchar(32),
+	card_validity varchar(32),
+	card_type varchar(32),
+	primary key(card_id),
+	cust_id decimal(12),
+	foreign key (cust_id) references Customer(cust_id)
+);
+create table Orders(
+            id integer primary key ,
+           cust_id integer references custumers (id),
+            pack_id integer references packages (id),
+           order_date date,
+           price varchar,
+           payment varchar check ( payment in ('credit card','contract') )
+
+	);
+CREATE TABLE Invoice(
+	invoice_id decimal(12),
+	tax varchar(32),
+	total_amount decimal(12),
+	invoice_date date,
+	PRIMARY KEY (invoice_id)
+);
+create table Payment(
+	payment_id decimal(12),
+	primary key(payment_id),
+	order_id decimal(12),
+	card_id decimal(12),
+	invoice_id decimal(12),
+	foreign key(order_id) references Orderr(order_id),
+	foreign key(card_id) references Card(card_id),
+	foreign key(invoice_id) references Invoice(invoice_id)
+);
+
+CREATE TABLE Deliber(
+           Deliber_id decimal(12),
+
+           card_id decimal(12),
+           check_number decimal(12),
+	primary key(check_number),
+	cust_id decimal(12),
+	foreign key (cust_id) references Customer(cust_id)
+);
+);
+create table Contract(
+	contract_id decimal(12),
+	start_date date,
+	end_date date,
+	monthly_bill decimal(12),
+	primary key (contract_id),
+	cust_id decimal(12),
+	company_id decimal(12),
+	foreign key (cust_id) references Customer(cust_id),
+	foreign key (company_id) references Company(company_id)
+);
+
+create table Employee(
+	employee_id decimal(12),
+	emp_fname varchar(32),
+	emp_lname varchar(32),
+	salary decimal(12),
+	primary key (employee_id),
+	company_id decimal(12),
+	foreign key (company_id) references Company(company_id)
+);
+create table Locationn(
+	location_id decimal(12),
+	city varchar(32),
+	street varchar(32),
+	primary key (location_id)
+);
+create table Warehouse (
+	warehouse_id decimal(12),
+	warehouse_no decimal(12),
+	primary key (warehouse_id),
+	location_id decimal(12),
+	foreign key (location_id) references Locationn(location_id)
+);
+
+
+
+
+create table Tracking_system (
+	tracking_id decimal(12),
+	tracking_date date,
+	primary key (tracking_id),
+	location_id decimal(12),
+	foreign key (location_id) references Locationn (location_id)
+);
+
+create table Transport (
+	transport_id decimal(12),
+	transport_type varchar(32),
+	date_of_shipment date,
+	date_of_arrival date,
+	primary key(transport_id),
+	tracking_id decimal(12),
+	foreign key (tracking_id) references Tracking_system (tracking_id)
+);
+
+create table Package_tracking_system(
+	package_tracking_id decimal(12),
+	tracking_date date,
+	primary key (package_tracking_id),
+	location_id decimal(12),
+	foreign key (location_id) references Locationn (location_id)
+);
+
+
+
+
+create table Hazardous_materials(
+	material_id decimal(12),
+	material_type varchar(32),
+	primary key (material_id) 
+);
+
+create table international_shipments (
+	declaration_id decimal(12),
+	declaration_description varchar(256),
+	primary key (declaration_id)
+);
+create table Package (
+	package_id decimal(12),
+	package_type varchar(32),
+	weight varchar(12),
+	price decimal(20),
+	arrival_date date,
+	primary key (package_id),
+	cust_id decimal(12),
+	transport_id decimal(12),
+	package_tracking_id decimal(12),
+	material_id decimal(12),
+	declaration_id decimal(12),
+	foreign key (cust_id) references Customer(cust_id),
+	foreign key (transport_id) references Transport(transport_id),
+	foreign key (package_tracking_id) references Package_tracking_system(package_tracking_id),
+	foreign key (material_id) references Hazardous_materials(material_id),
+	foreign key (declaration_id) references International_shipments(declaration_id)
+);
+create table Package_employee (
+	package_emp_id decimal(12),
+	primary key (package_emp_id),
+	package_id decimal(12),
+	employee_id decimal(12),
+	foreign key (package_id) references Package(package_id),
+	foreign key (employee_id) references Employee(employee_id)
+);
+CUSTOMER
+insert into Customer (cust_id, first_name, last_name,country, city, street, home, phone,company_id ) 
+values (1, 'Aibat', 'Akkas', 'Almaiy', 'Tutgut', '93001', '+7 778 927 25 50','55525528595254),
+values (2, 'Aruzhan', 'Akkas', 'Taraz', 'Abay', '93002', +77022692105','55525528595254),
+values (3, 'Aibat', 'Akkas', 'Karagandy', 'Auezov', '93003', '+7 778 927 250','55525528595254),
+values (4, 'Aibat', 'Akkas', 'Almaiy', 'Tutgut', '93004', '+7 778 927 25 50','55525528595254),
+values (5, 'Aibat', 'Akkas', 'Almaiy', 'Tutgut', '93005', '+7 778 927 25 50','55525528595254),
+values (6, 'Aibat', 'Akkas', 'Almaiy', 'Tutgut', '93006', '+7 778 927 25 50','55525528595254),
+values (7, 'Aibat', 'Akkas', 'Almaiy', 'Tutgut', '93007', '+7 778 927 25 50','55525528595254),
+values (8, 'Aibat', 'Akkas', 'Almaiy', 'Tutgut', '93008', '+7 778 927 25 50','55525528595254),
+values (9, 'Aibat', 'Akkas', 'Almaiy', 'Tutgut', '93009', '+7 778 927 25 50','55525528595254),
+values (10, 'Aibat', 'Akkas', 'Almaiy', 'Tutgut', '93010', '+7 778 927 25 50','55525528595254),
+values (11, 'Aibat', 'Akkas', 'Almaiy', 'Tutgut', '93011', '+7 778 927 25 50','55525528595254),
+values (12, 'Aibat', 'Akkas', 'Almaiy', 'Tutgut', '93012', '+7 778 927 25 50','55525528595254),
+values (13, 'Aibat', 'Akkas', 'Almaiy', 'Tutgut', '93013', '+7 778 927 25 50','55525528595254),
+values (14, 'Aibat', 'Akkas', 'Almaiy', 'Tutgut', '93014', '+7 778 927 25 50','55525528595254),
+values (15, 'Aibat', 'Akkas', 'Almaiy', 'Tutgut', '930015', '+7 778 927 25 50','55525528595254),
+values (16, 'Aibat', 'Akkas', 'Almaiy', 'Tutgut', '930016', '+7 778 927 25 50','55525528595254),
+values (17, 'Aibat', 'Akkas', 'Almaiy', 'Tutgut', '93017', '+7 778 927 25 50','55525528595254),
+values (18, 'Aibat', 'Akkas', 'Almaiy', 'Tutgut', '93018', '+7 778 927 25 50','55525528595254),
+values (19, 'Aibat', 'Akkas', 'Almaiy', 'Tutgut', '93019', '+7 778 927 25 50','55525528595254),
+values (20, 'Aibat', 'Akkas', 'Almaiy', 'Tutgut', '93020', '+7 778 927 25 50','55525528595254),
+COMPANY
+insert into Company (company_id, company_name, company_location) 
+values (1, 'KazExpress', 'Kazakhstan');
+CREDIT CARD
+insert into Card(card_id, card_name, card_validity, cust_id, card_type)
+values(3456,'KaspiGold','2023-09-11',3,'MasterCard'),
+(7777,'SberBank','2024-10-03',6,'MasterCard'),
+(5865,'KaspiGold','2022-08-17',8,'MasterCard'),
+(8569,'AltynBank','2024-12-01',10,'MasterCard'),
+(1234,'EurasianBank','2021-12-10',2,'MasterCard'),
+(5454,'HalykBank','2022-04-19',5,'Visa'),
+(3425,'ZhusanBank','2023-01-14',7,'Visa'),
+(4567,'HalykBank','2022-05-08',9,'Visa'),
+(1000,'AllianceBank','2024-03-14',1,'Visa'),
+(7489,'Eurasian Bank','2023-11-19',4,'Visa');
+
+ORDER
+insert into orders values (1800,1,666,'2021-03-09','9000','credit card');
+insert into Orderr(order_id,cust_id, company_id)
+values(110,1,1),
+(111,1,1),
+(112,1,1),
+(113,3,1),
+(114,5,1),
+(115,10,1),
+(116,9,1),
+(117,9,1),
+(118,2,1),
+(119,8,1);
+INVOICE
+insert into Invoice(invoice_id, tax, total_amount, invoice_date)
+values(1001, '0.5%', 12000, '2021-11-25'),
+(1002,'1.2%', 24500, '2021-12-01'),
+(1003,'6.2%', 45000, '2021-11-27'),
+(1004,'2.5%', 23000, '2021-12-03'),
+(1005,'1.2%', 70000, '2021-11-29'),
+(1006,'0.5%', 10000, '2021-12-02'),
+(1007,'1.5%', 175000,'2021-12-01'),
+(1008,'1.5%', 180000,'2021-12-01'),
+(1009,'0.5%', 48000, '2021-11-14'),
+(1010,'3.5%', 95500, '2021-11-08');
+
+
+
+
+
+PAYMENT
+insert into Payment(payment_id, order_id, card_id, invoice_id)
+values(10, 110, 1000, 1001),
+(11,111,1000,1002),
+(12,112,1000,1003),
+(13,113,3456,1004),
+(14,114,5454,1005),
+(15,115,8569,1006),
+(16,116,4567,1007),
+(17,117,4567,1008),
+(18,118,1234,1009),
+(19,119,5865,1010);
+PREPAID
+insert into Prepaid(check_number, cust_id)
+values(148, 3),
+(149,4),
+(150,5);
+BILL
+insert into Bill(bill_id, created_date, expiration_date, cust_id, amount_owed)
+values(111110, '2021-11-18','2024-11-19', 1, 1000),
+(111111, '2021-11-24','2024-11-25', 2, 500),
+(111112, '2021-12-01','2024-12-02', 3, 0),
+(111113, '2021-11-26','2024-11-27', 4, 0),
+(111114, '2021-11-26','2024-11-27', 5, 500),
+(111115, '2021-11-22','2024-11-23', 6, 0),
+(111116, '2021-12-03','2024-12-04', 7, 0),
+(111117, '2021-11-20','2024-11-21', 8, 0),
+(111118, '2021-11-12','2024-11-13', 9, 700),
+(111119, '2021-11-17','2024-11-18', 10, 0);
+CONTRACT
+insert into Contract(contract_id, start_date, end_date, monthly_bill, cust_id, company_id)
+values(330, '2021-11-01','2024-11-01', 2000, 6, 1),
+(331, '2021-11-11','2024-11-11', 2000, 7, 1),
+(332, '2021-12-02','2024-12-02', 2000, 8, 1),
+(333, '2021-11-22','2024-11-22', 2000, 10, 1);
+EMPLOYEE
+insert into Employee (employee_id, emp_fname, emp_lname, salary, company_id)
+values(11000, 'Luke', 'Flips', 112303, 1),
+(11001,'Kerk', 'Yanshin', 81755, 1),
+(11002, 'Jilly', 'Dearell', 147934, 1),
+(11003, 'Kermie', 'Tomik', 123663, 1),
+(11004, 'Parnell', 'Spurret', 72976, 1),
+(11005, 'Dee', 'O'' Shea', 67915, 1),
+(11006, 'Elset', 'Stammer', 114096, 1),
+(11007, 'Anastassia', 'Humbey', 114415, 1),
+(11008, 'Katleen', 'Zack', 97942, 1),
+(11009, 'Randal', 'Langrick', 110479, 1);
+LOCATION
+insert into Locationn(location_id, city, street)
+values(31, 'Wuhao', 'Monument'),
+(32, 'Atlantis','Anderson'),
+(33, 'Jumpangdua','Jenifer'),
+(34, 'Getafe','Mifflin'),
+(35, 'Almaty','Nur-sultan'),
+(36, 'Nanyang','Glacier Hill'),
+(37, 'Nur-sultan','Turkestan'),
+(38, 'Montevideo','Hoffman'),
+(39, 'Krajan Bejagung','Mitchell'),
+(40, 'Batou','Petterle');
+WAREHOUSE
+insert into Warehouse(warehouse_id, warehouse_no, location_id)
+values(200, 1, 31),
+(201, 2, 35);
+TRACKING SYSTEM
+insert into tracking_system (tracking_id, tracking_date, location_id)
+values (50, '2021-11-15', 34),
+(51, '2021-11-28', 38),
+(52, '2021-12-01', 38),
+(53, '2021-12-02', 35),
+(54, '2021-11-20', 37),
+(55, '2021-11-11', 39),
+(56, '2021-11-29', 31),
+(57, '2021-12-03', 34),
+(58, '2021-11-25', 33),
+(59, '2021-11-09', 36);
+TRANSPORT
+insert into Transport (transport_id, transport_type, date_of_shipment, date_of_arrival, tracking_id)
+values(1720, 'plane', '2021-11-12','2021-11-25', 50),
+(1721, 'truck','2021-11-27','2021-12-02',52),
+(1722, 'plane','2021-11-23','2021-11-30',51),
+(1723, 'truck','2021-11-24','2021-12-05',53),
+(1724, 'plane','2021-11-18','2021-12-12',54),
+(1725, 'truck','2021-11-10','2021-11-25',55),
+(1726, 'plane','2021-12-02','2022-01-04',56),
+(1727, 'truck','2021-11-23','2021-11-30',57),
+(1728, 'plane','2021-10-30','2021-11-29',58),
+(1729, 'truck','2021-11-01','2021-11-28',59);
+PACKAGE TRACKING SYSTEM
+insert into package_tracking_system (package_tracking_id, tracking_date, location_id)
+values (60, '2021-11-15', 34),
+(61, '2021-11-28', 38),
+(62, '2021-12-01', 38),
+(63, '2021-12-02', 35),
+(64, '2021-11-20', 37),
+(65, '2021-11-11', 39),
+(66, '2021-11-29', 31),
+(67, '2021-12-03', 34),
+(68, '2021-11-25', 33),
+(69, '2021-11-09', 36);
+HAZARDOUS MATERIALS
+insert into Hazardous_materials(material_id, material_type)
+values(1, 'Explosives and gases'),
+(2, 'Flammable solids'),
+(3, 'Radioactive materials'),
+(4, 'Battery powered equipment');
+INTERNATIONAL SHIPMENTS
+insert into international_shipments(declaration_id, declaration_description)
+values(777, 'I hereby certify that the information on this invoice is true and correct and the contents and value of this shipment are as stated.')
+
+
+
+
+
+
+PACKAGE
+insert into package(package_id, package_type, weight, price, arrival_date, cust_id, transport_id, package_tracking_id, material_id, declaration_id)
+values(500, 'Aerosol', '1kg', 1000, null, 4, null, 63, 1, null),
+(501, 'Smoke detector', '800', 800, null, 2, 1721, 62, 3, 777),
+(502, 'Small box', '5kg', 1500,'2021-11-28', 9, 1729, 69, null, 777),
+(503, 'Flat envelope', '100g', 500,'2021-11-28',9, 1729, 69, 4, 777),
+(504, 'Mobile phone','700g', 750,'2021-11-29', 1, 1726, 66, 4, 777),
+(505, 'Oily fabrics','50g',1250,'2021-11-29', 1, 1726, 66, 2, 777),
+(506, 'Watch', '100g', 500,'2021-11-29',1, 1726, 66, 4, 777),
+(507, 'Flat envelope','5g', 200,'2021-11-25',6, 1725, 65, 3, 777),
+(508, 'Large box','10kg', 3000, null, 3, null, 64, null, null);
+PACKAGE EMPLOYEES
+insert into package_employee(package_emp_id, package_id, employee_id)
+values(1, 500, 11000),
+(2, 508, 11001),
+(3, 508, 11002),
+(4, 508, 11003),
+(5, 502, 11004),
+(6, 503, 11005),
+(7, 504, 11005),
+(8, 505, 11006),
+(9, 506, 11007),
+(10, 507, 11008),
+(11, 501, 11009);
+
+
+⦁	Find all customers who had a package on that truck at the time of the crash
+
+SELECT TRANSPORT.TRANSPORT_ID, CUSTOMER.CUST_ID, PACKAGE.PACKAGE_TYPE
+FROM TRANSPORT 
+INNER JOIN PACKAGE ON TRANSPORT.TRANSPORT_ID = PACKAGE.TRANSPORT_ID
+INNER JOIN CUSTOMER ON CUSTOMER.CUST_ID = PACKAGE.CUST_ID
+WHERE PACKAGE.TRANSPORT_ID = 1721
+GROUP BY TRANSPORT.TRANSPORT_ID, CUSTOMER.CUST_ID, PACKAGE.PACKAGE_TYPE
+⦁	Find the customer who has shipped the most packages in the past year
+SELECT CUSTOMER.CUST_ID, CUSTOMER.FNAME, CUSTOMER.LNAME, COUNT(PACKAGE.PACKAGE_ID) AS NUMBER_OF_PACKAGES
+FROM CUSTOMER 
+INNER JOIN PACKAGE ON PACKAGE.CUST_ID = CUSTOMER.CUST_ID
+WHERE PACKAGE.ARRIVAL_DATE > '2021-01-01' 
+GROUP BY CUSTOMER.CUST_ID
+ORDER BY NUMBER_OF_PACKAGES DESC
+
+
+
+⦁	Find the street with the most customers
+
+SELECT CUSTOMER.STREET, COUNT(CUSTOMER.CUST_ID) AS NUMBER_OF_CUSTOMERS 
+FROM CUSTOMER 
+GROUP BY CUSTOMER.STREET
+ORDER BY NUMBER_OF_CUSTOMERS DESC
+LIMIT 1
+⦁	Find those packages that were not delivered within the promised time
+
+SELECT PACKAGE.PACKAGE_ID, TRANSPORT.DATE_OF_ARRIVAL AS ARRIVED_DATE, PACKAGE.ARRIVAL_DATE AS HAD_TO_ARRIVED
+FROM PACKAGE
+INNER JOIN TRANSPORT ON TRANSPORT.TRANSPORT_ID = PACKAGE.TRANSPORT_ID
+WHERE PACKAGE.ARRIVAL_DATE < TRANSPORT.DATE_OF_ARRIVAL 
+
+
+⦁	A simple bill: customer, address, and amount owed
+
+SELECT CUSTOMER.CUST_ID, CUSTOMER.CITY, CUSTOMER.STREET, CUSTOMER.HOME, BILL.AMOUNT_OWED 
+FROM CUSTOMER 
+INNER JOIN BILL ON CUSTOMER.CUST_ID = BILL.CUST_ID
+WHERE BILL.AMOUNT_OWED > 0
+GROUP BY CUSTOMER.CUST_ID, BILL.AMOUNT_OWED 
+ORDER BY BILL.AMOUNT_OWED
+⦁	A bill listing charges by type of service.
+
+SELECT BILL.BILL_ID, PACKAGE.PACKAGE_ID, PACKAGE.PACKAGE_TYPE, PACKAGE.PRICE
+FROM PACKAGE 
+INNER JOIN CUSTOMER ON CUSTOMER.CUST_ID = PACKAGE.CUST_ID 
+INNER JOIN BILL ON BILL.CUST_ID = CUSTOMER.CUST_ID
+GROUP BY BILL.BILL_ID, PACKAGE.PACKAGE_ID
+ORDER BY BILL.BILL_ID
+
+
+⦁	An itemize billing listing each individual shipment and the charges for it
+
+SELECT PACKAGE.PACKAGE_ID, PACKAGE.PRICE
+FROM PACKAGE 
+INNER JOIN CUSTOMER ON CUSTOMER.CUST_ID = PACKAGE.CUST_ID
+GROUP BY PACKAGE_ID
+ORDER BY PACKAGE_ID
+
